@@ -1,0 +1,111 @@
+/********************************************************/
+/* プログラム名：style.css                              */
+/*======================================================*/
+/* 概要：すべてのViewファイルで読み込まれるCSSファイル  */
+/*======================================================*/
+/* 作成日：2016-9-5                                     */
+/* 作成者：鶴田 博文                                    */
+/* 最終更新日：                                         */
+/* 更新者：                                             */
+/********************************************************/
+@charset "utf-8";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-family: YuGothic, Meiryo, "Hiragino Kaku Gothic Pro", sans-serif;
+}
+
+body {
+    width: 100%;
+    min-width: 800px;
+    -webkit-text-size-adjust: 100%;
+    margin-top: 30px;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+p {
+    margin: 5px 0;
+}
+
+
+tr  {
+    text-align: center;
+}
+
+th {
+    text-align: center;
+}
+
+th.code {
+    width: 20%;
+}
+
+th.name {
+    width: 35%;
+}
+
+th.update_date {
+    width: 25%;
+}
+
+th.update_btn {
+    width: 10%;
+}
+
+th.delete_btn {
+    width: 10%;
+}
+
+td.code {
+    width: 40%;
+}
+
+td.name {
+    width: 60%;
+}
+
+
+label {
+    padding: 0 6px;
+}
+
+div.col-sm-9 {
+    padding: 0;
+}
+
+div.col-sm-3 {
+    padding: 0;
+}
+
+.center {
+    text-align: center;
+}
+
+.well {
+    margin-bottom: 30px;
+}
+
+.form-group {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+ul.error_list {
+    color: red;
+}
+
+ul.error_list li {
+    margin: 5px 0;
+}
