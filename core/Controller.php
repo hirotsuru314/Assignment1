@@ -82,8 +82,7 @@ abstract class Controller
         $info = array(
             'request'  => $this->_request,
             'base_url' => $this->_request->getBaseUrl(),
-            'session'  => $this->_session,
-        );
+            'session'  => $this->_session);
 
         $view = new View($this->_application->getViewDirectory(), $info);
         //$viewFileの指定がない場合は、アクション名をファイル名として設定

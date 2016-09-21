@@ -6,8 +6,8 @@
 /*======================================================*/
 /* 作成日：2016-9-5                                     */
 /* 作成者：鶴田 博文                                    */
-/* 最終更新日：                                         */
-/* 更新者：                                             */
+/* 最終更新日：2016-9-21                                */
+/* 更新者：鶴田 博文                                    */
 /********************************************************/
 class PrefectureController extends Controller
 {
@@ -79,7 +79,15 @@ class PrefectureController extends Controller
 
             //検索条件にあうレコードをmst_prefectureテーブルから取得
             $searchedPrefectures = $this->_connect_model->get('Prefecture')->searchRecord($prefectureCD, $prefectureName, $limit, $offset);
-            $search_view = $this->render(array('searchedPrefectures' => $searchedPrefectures, 'prefectureCD' => $prefectureCD, 'prefectureName' => $prefectureName, 'recordNumber' => $recordNumber, 'errors' => $errors, 'page' => $page, 'offset' => $offset), 'index');
+            $search_view = $this->render(array(
+                'searchedPrefectures' => $searchedPrefectures,
+                'prefectureCD'        => $prefectureCD,
+                'prefectureName'      => $prefectureName,
+                'recordNumber'        => $recordNumber,
+                'errors'              => $errors,
+                'page'                => $page,
+                'offset'              => $offset),
+                'index');
             return $search_view;
         } else {
             return $this->render(array('errors' => $errors), 'index');
@@ -101,13 +109,19 @@ class PrefectureController extends Controller
             $searchPrefectureCD = $this->_request->getPost('searchPrefectureCD');
             $searchPrefectureName = $this->_request->getPost('searchPrefectureName');
             $searchPage = $this->_request->getPost('searchPage');
-            $register_view = $this->render(array('searchPrefectureCD' => $searchPrefectureCD, 'searchPrefectureName' => $searchPrefectureName, 'searchPage' => $searchPage, '_token' => $this->getToken(self::DEF_PASS_REGISTER)));
+            $register_view = $this->render(array(
+                'searchPrefectureCD'   => $searchPrefectureCD,
+                'searchPrefectureName' => $searchPrefectureName,
+                'searchPage'           => $searchPage,
+                '_token'               => $this->getToken(self::DEF_PASS_REGISTER)));
             return $register_view;
         } else {
           //一覧画面が検索結果を表示していない状態から追加ボタンが押された場合
             $prefectureCD = $this->_request->getPost('prefectureCD');
             $prefectureName = $this->_request->getPost('prefectureName');
-            $register_view = $this->render(array('prefectureCD' => $prefectureCD, 'prefectureName' => $prefectureName, ));
+            $register_view = $this->render(array(
+                'prefectureCD'   => $prefectureCD,
+                'prefectureName' => $prefectureName));
             return $register_view;
         }
     }
@@ -137,6 +151,13 @@ class PrefectureController extends Controller
             $prefectureCD = '';
         }
 
+        //INSERT START（2016/9/21)鶴田博文
+        //地域コードがすでに登録済みの場合はエラーを表示
+        if (!$this->_connect_model->get('Prefecture')->isUniquePrefectureCode($prefectureCD)) {
+            $errors[] = "地域コードがすでに登録済みです";
+        }
+        //INSERT END（2016/9/21)鶴田博文
+
         //地域名のバリデーション
         if (!isset($prefectureName) || !strlen($prefectureName) || mb_strlen($prefectureName) > 20) {
             $errors[] = "地域名が不正です";
@@ -147,11 +168,18 @@ class PrefectureController extends Controller
         if (count($errors) === 0) {
             $prefectureCD = str_pad($prefectureCD, 2, 0, STR_PAD_LEFT);
             $prefectureName = mb_convert_kana($prefectureName, "ASK");
-            $confirm_view = $this->render(array('prefectureCD' => $prefectureCD, 'prefectureName' => $prefectureName, '_token' => $this->getToken(self::DEF_PASS_REGISTER)));
+            $confirm_view = $this->render(array(
+                'prefectureCD'   => $prefectureCD,
+                'prefectureName' => $prefectureName,
+                '_token'         => $this->getToken(self::DEF_PASS_REGISTER)));
             return $confirm_view;
         } else {
         //エラーがある場合は、登録画面から遷移せず、エラーメッセージを表示する
-            $confirm_view = $this->render(array('prefectureCD'=>$prefectureCD, 'prefectureName' => $prefectureName, 'errors' => $errors), 'register');
+            $confirm_view = $this->render(array(
+                'prefectureCD'   => $prefectureCD,
+                'prefectureName' => $prefectureName,
+                'errors'         => $errors),
+                'register');
             return $confirm_view;
         }
     }
@@ -182,7 +210,9 @@ class PrefectureController extends Controller
             }
 
             $this->_connect_model->get('Prefecture')->insert($prefectureCD, $prefectureName);
-            $complete_view = $this->render(array('prefectureCD' => $prefectureCD, 'prefectureName' => $prefectureName));
+            $complete_view = $this->render(array(
+                'prefectureCD'   => $prefectureCD,
+                'prefectureName' => $prefectureName));
             return $complete_view;
         }
 
@@ -194,7 +224,9 @@ class PrefectureController extends Controller
             }
 
             $this->_connect_model->get('Prefecture')->update($prefectureCD, $prefectureName);
-            $complete_view = $this->render(array('prefectureCD' => $prefectureCD, 'prefectureName' => $prefectureName));
+            $complete_view = $this->render(array(
+                'prefectureCD'   => $prefectureCD,
+                'prefectureName' => $prefectureName));
             return $complete_view;
         }
 
@@ -208,7 +240,6 @@ class PrefectureController extends Controller
             $this->_connect_model->get('Prefecture')->delete($prefectureCD);
             $this->redirect('/');
         }
-
 
     }
 
@@ -237,7 +268,13 @@ class PrefectureController extends Controller
         $prefectureRecord = $this->_connect_model->get('Prefecture')->getPrefectureRecord($prefectureCD);
         $prefectureName = $prefectureRecord['prefecture_name'];
 
-        $update_view = $this->render(array('prefectureCD' => $prefectureCD, 'prefectureName' => $prefectureName, 'searchPrefectureCD' => $searchPrefectureCD, 'searchPrefectureName' => $searchPrefectureName, 'searchPage' => $searchPage), 'register');
+        $update_view = $this->render(array(
+            'prefectureCD'         => $prefectureCD,
+            'prefectureName'       => $prefectureName,
+            'searchPrefectureCD'   => $searchPrefectureCD,
+            'searchPrefectureName' => $searchPrefectureName,
+            'searchPage'           => $searchPage),
+            'register');
         return $update_view;
     }
 
@@ -266,7 +303,14 @@ class PrefectureController extends Controller
         $prefectureRecord = $this->_connect_model->get('Prefecture')->getPrefectureRecord($prefectureCD);
         $prefectureName = $prefectureRecord['prefecture_name'];
 
-        $delete_view = $this->render(array('prefectureCD' => $prefectureCD, 'prefectureName' => $prefectureName, 'searchPrefectureCD' => $searchPrefectureCD, 'searchPrefectureName' => $searchPrefectureName, 'searchPage' => $searchPage, '_token' => $this->getToken(self::DEF_PASS_DELETE)), 'confirm');
+        $delete_view = $this->render(array(
+            'prefectureCD'         => $prefectureCD,
+            'prefectureName'       => $prefectureName,
+            'searchPrefectureCD'   => $searchPrefectureCD,
+            'searchPrefectureName' => $searchPrefectureName,
+            'searchPage'           => $searchPage,
+            '_token'               => $this->getToken(self::DEF_PASS_DELETE)),
+            'confirm');
         return $delete_view;
     }
 }

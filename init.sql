@@ -5,8 +5,8 @@
 /*======================================================*/
 /* 作成日：2016-9-5                                     */
 /* 作成者：鶴田 博文                                    */
-/* 最終更新日：                                         */
-/* 更新者：                                             */
+/* 最終更新日：2016-9-21                                */
+/* 更新者：鶴田 博文                                    */
 /********************************************************/
 
 CREATE DATABASE mst_prefecture_db;
@@ -26,3 +26,6 @@ CREATE TABLE `mst_prefecture` (
     delete_flg CHAR(1) NOT NULL DEFAULT '0',
     PRIMARY KEY(prefecture_cd)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `mst_prefecture` ADD INDEX prefecture_cd_idx (prefecture_cd);
+ALTER TABLE `mst_prefecture` ADD INDEX prefecture_cd_name_idx (prefecture_cd, prefecture_name);

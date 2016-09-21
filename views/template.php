@@ -5,8 +5,8 @@
 /*======================================================*/
 /* 作成日：2016-9-5                                     */
 /* 作成者：鶴田 博文                                    */
-/* 最終更新日：                                         */
-/* 更新者：                                             */
+/* 最終更新日：2016-9-21                                */
+/* 更新者：鶴田 博文                                    */
 /******************************************************-->
 <!DOCTYPE html>
 <html>
@@ -17,8 +17,6 @@
 
         <!-- Bootstrapの読み込み -->
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
         <!-- CSSの読み込み -->
         <link rel="stylesheet" type="text/css" href="/css/reset.css" />

@@ -6,8 +6,8 @@
 /*======================================================*/
 /* 作成日：2016-9-5                                     */
 /* 作成者：鶴田 博文                                    */
-/* 最終更新日：                                         */
-/* 更新者：                                             */
+/* 最終更新日：2016-9-21                                */
+/* 更新者：鶴田 博文                                    */
 /********************************************************/
 class PrefectureModel extends ExecuteModel
 {
@@ -24,8 +24,28 @@ class PrefectureModel extends ExecuteModel
         $sql = "INSERT INTO mst_prefecture (prefecture_cd, prefecture_name, insert_date, insert_cd)
                 values (:prefecture_cd, :prefecture_name, now(), 'admin')";
         $stmt = $this->execute($sql, array(
-            ':prefecture_cd' => $prefectureCD,
-            ':prefecture_name' => $prefectureName));
+            ':prefecture_cd'   =>  $prefectureCD,
+            ':prefecture_name' =>  $prefectureName));
+    }
+
+    /********************************************************/
+    /* Public Function                                      */
+    /*======================================================*/
+    /* 関数名: isUniquePrefectureCode                       */
+    /*======================================================*/
+    /* 概要  : 地域コードがすでに登録済みであるか調べる     */
+    /* 引数  : 地域コード                                   */
+    /* 戻り値: Boolean                                      */
+    /********************************************************/
+    public function isUniquePrefectureCode($prefectureCD) {
+        $prefectureCD = str_pad($prefectureCD, 2, 0, STR_PAD_LEFT);  //ゼロパディング
+        $sql = "SELECT COUNT(prefecture_cd) AS count
+                FROM mst_prefecture WHERE prefecture_cd = :prefecture_cd";
+        $row = $this->getRecord($sql, array(':prefecture_cd' => $prefectureCD));
+        if ($row['count'] === '0') {
+            return true;
+        }
+        return false;
     }
 
     /********************************************************/
@@ -43,8 +63,8 @@ class PrefectureModel extends ExecuteModel
             THEN prefecture_name = prefecture_name ELSE prefecture_name LIKE(:prefecture_name) END)
             AND (delete_flg = '0') ORDER BY prefecture_cd ASC LIMIT $limit OFFSET $offset";
         $searchedPrefectures = $this->getAllRecord($sql, array(
-            ':prefecture_cd' => $prefectureCD,
-            ':prefecture_name' => "%{$prefectureName}%"));
+            ':prefecture_cd'   =>  $prefectureCD,
+            ':prefecture_name' =>  "%{$prefectureName}%"));
         return $searchedPrefectures;
     }
 
@@ -62,8 +82,8 @@ class PrefectureModel extends ExecuteModel
             THEN prefecture_cd ELSE :prefecture_cd END) AND (CASE WHEN :prefecture_name = '%%'
             THEN prefecture_name = prefecture_name ELSE prefecture_name LIKE(:prefecture_name) END) AND (delete_flg = '0')";
         $recordNumber = $this->getAllRecord($sql, array(
-            ':prefecture_cd' => $prefectureCD,
-            ':prefecture_name' => "%{$prefectureName}%"));
+            ':prefecture_cd'   =>  $prefectureCD,
+            ':prefecture_name' =>  "%{$prefectureName}%"));
         return count($recordNumber);
     }
 
@@ -95,8 +115,8 @@ class PrefectureModel extends ExecuteModel
         $sql = "UPDATE mst_prefecture SET prefecture_name = :prefecture_name,
             update_date = now(), update_cd = 'admin' WHERE prefecture_cd = :prefecture_cd";
         $stmt = $this->execute($sql, array(
-            ':prefecture_cd' => $prefectureCD,
-            ':prefecture_name' => $prefectureName));
+            ':prefecture_cd'   =>  $prefectureCD,
+            ':prefecture_name' =>  $prefectureName));
     }
 
     /********************************************************/
